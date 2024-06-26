@@ -2,23 +2,26 @@ import React from 'react';
 import ClothingItem from '../components/ClothingItem';
 import Header from '../components/Header';
 import { useClothingItems } from '../hooks/useFetch';
-import { ClothingItemProps } from '../config';
+import { ClothingItemProps, ClothingItemType } from '../config';
+import { Box, List, ListItem, Spinner, Text } from '@chakra-ui/react';
 
 const ClothingListScreen: React.FC = () => {
   const { data: clothingItems, isLoading, error } = useClothingItems();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading items</div>;
+  if (isLoading) return <Spinner />;
+  if (error) return <Text>Error loading items</Text>;
 
   return (
-    <div>
+    <Box>
       <Header title="Clothing List" showBackButton />
-      <ul>
-        {clothingItems.map((item: ClothingItemProps) => (
-          <ClothingItem key={item.id} item={item} />
+      <List spacing={3} p={4}>
+        {clothingItems.map((item: ClothingItemType) => (
+          <ListItem key={item.id}>
+            <ClothingItem item={item} id={item.id} />
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 };
 

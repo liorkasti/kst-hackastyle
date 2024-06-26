@@ -1,4 +1,14 @@
-import React, { useState } from 'react';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  IconButton,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type HeaderProps = {
@@ -6,102 +16,71 @@ type HeaderProps = {
   showBackButton?: boolean;
 };
 
-const Header: React.FC<HeaderProps> = ({ title, showBackButton = false }) => {
+const Header: FC<HeaderProps> = ({ title, showBackButton = false }) => {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toggleMenu = () => (isOpen ? onClose() : onOpen());
 
   return (
-    <header style={styles.header}>
-      {showBackButton && (
-        <button style={styles.button} onClick={() => navigate(-1)}>
-          Back
-        </button>
+    <Box as="header" bg="blue.500" color="white" px={4} py={3} boxShadow="md">
+      <Flex alignItems="center" justifyContent="space-between">
+        {showBackButton && (
+          <Button
+            variant="outline"
+            colorScheme="whiteAlpha"
+            onClick={() => navigate(-1)}
+          >
+            Back
+          </Button>
+        )}
+        <Heading as="h1" size="lg">
+          HackaStyle
+        </Heading>
+        <Flex alignItems="center">
+          <Text fontSize="xl" ml={4}>
+            {title}
+          </Text>
+          <IconButton
+            ml={4}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label="Toggle Menu"
+            variant="outline"
+            colorScheme="whiteAlpha"
+            onClick={toggleMenu}
+          />
+        </Flex>
+      </Flex>
+      {isOpen && (
+        <Box mt={4} bg="blue.600" rounded="md" boxShadow="md">
+          <Flex direction="column" p={4}>
+            <Button
+              mb={2}
+              variant="link"
+              colorScheme="whiteAlpha"
+              onClick={() => navigate('/')}
+            >
+              Home
+            </Button>
+            <Button
+              mb={2}
+              variant="link"
+              colorScheme="whiteAlpha"
+              onClick={() => navigate('/clothing-list')}
+            >
+              Clothing List
+            </Button>
+            <Button
+              variant="link"
+              colorScheme="whiteAlpha"
+              onClick={() => navigate('/saved-sets')}
+            >
+              Saved Sets
+            </Button>
+          </Flex>
+        </Box>
       )}
-      <h1>HackaStyle</h1>
-      <h2 style={styles.title}>{title}</h2>
-      <button style={styles.button} onClick={toggleMenu}>
-        Menu
-      </button>
-      {isMenuOpen && (
-        <nav style={styles.nav}>
-          <ul style={styles.navList}>
-            <li>
-              <button style={styles.navButton} onClick={() => navigate('/')}>
-                Home
-              </button>
-            </li>
-            <li>
-              <button
-                style={styles.navButton}
-                onClick={() => navigate('/clothing-list')}
-              >
-                Clothing List
-              </button>
-            </li>
-            <li>
-              <button
-                style={styles.navButton}
-                onClick={() => navigate('/saved-sets')}
-              >
-                Saved Sets
-              </button>
-            </li>
-          </ul>
-        </nav>
-      )}
-    </header>
+    </Box>
   );
-};
-
-const styles = {
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '1rem',
-    borderBottom: '1px solid #dee2e6',
-    position: 'relative',
-  },
-  title: {
-    margin: 0,
-    fontSize: '1.5rem',
-  },
-  button: {
-    fontSize: '1rem',
-    padding: '0.5rem',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '0.25rem',
-    cursor: 'pointer',
-  },
-  nav: {
-    position: 'absolute',
-    top: '3rem',
-    right: '1rem',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    borderRadius: '0.25rem',
-    zIndex: 1000,
-  },
-  navList: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-  },
-  navButton: {
-    display: 'block',
-    width: '100%',
-    padding: '0.5rem 1rem',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderBottom: '1px solid #dee2e6',
-    cursor: 'pointer',
-    textAlign: 'left',
-  },
 };
 
 export default Header;

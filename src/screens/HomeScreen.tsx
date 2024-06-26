@@ -1,26 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import { Box, Button, Text } from '@chakra-ui/react';
 
 const HomeScreen: React.FC = () => {
   return (
-    <div>
+    <Box>
       <Header title="Home" />
-      <div>
+      <Box p={4}>
         <Link to="/clothing-list">
-          <button>Select Clothes</button>
+          <Button colorScheme="blue" mb={4}>
+            Select Clothes
+          </Button>
         </Link>
         <Link to="/saved-sets">
-          <button>View Saved Sets</button>
+          <Button colorScheme="blue">View Saved Sets</Button>
         </Link>
-      </div>
-      <div>
-        <h2>Summary</h2>
-        <p>Available Shoes: 10</p>
-        <p>Available Shirts: 15</p>
-        <p>Available Pants: 8</p>
-      </div>
-    </div>
+      </Box>
+      <Box p={4}>
+        <Text fontSize="lg" mb={2}>
+          Summary
+        </Text>
+        <Text>Available Shoes: 10</Text>
+        <Text>Available Shirts: 15</Text>
+        <Text>Available Pants: 8</Text>
+      </Box>
+    </Box>
   );
 };
 
