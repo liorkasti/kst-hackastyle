@@ -1,16 +1,25 @@
-import { ChakraProvider } from '@chakra-ui/react';
-import { FC } from 'react';
+import React from 'react';
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppRoutes from './routes';
+import { THEME } from './constants/theme';
 
 const queryClient = new QueryClient();
 
-const App: FC = () => {
+const theme = createTheme({
+  palette: {
+    primary: { main: THEME.primary },
+    secondary: { main: THEME.secondary },
+  },
+});
+
+const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         <AppRoutes />
-      </ChakraProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ClothingItemProps } from '../config';
+import { ClothingItemProps } from '../constants/types';
 
 const ClothingItem: FC<ClothingItemProps> = ({ item }) => {
   return (

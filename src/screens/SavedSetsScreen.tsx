@@ -1,4 +1,13 @@
-import { Box, Button, List, ListItem, Text } from '@chakra-ui/react';
+import React from 'react';
+import {
+  Box,
+  Button,
+  List,
+  ListItem,
+  Typography,
+  Divider,
+  Container,
+} from '@mui/material';
 import { FC } from 'react';
 import Header from '../components/Header';
 
@@ -16,28 +25,34 @@ const SavedSetsScreen: FC = () => {
   ];
 
   return (
-    <Box>
+    <Container>
       <Header title="Saved Sets" showBackButton />
-      <List spacing={3} p={4}>
-        {savedSets.map((set) => (
-          <ListItem
-            key={set.id}
-            borderBottom="1px solid"
-            borderColor="gray.200"
-            py={2}
-          >
-            <Text>Type: {set.type}</Text>
-            <Text>Brand: {set.brand}</Text>
-            <Text>Color: {set.color}</Text>
-            <Text>Size: {set.size}</Text>
-            <Text>Date: {set.date}</Text>
-            <Button mt={2} colorScheme="red">
-              Delete
-            </Button>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+      <Box mt={4}>
+        <List>
+          {savedSets.map((set) => (
+            <div key={set.id}>
+              <ListItem>
+                <Box>
+                  <Typography variant="body1">Type: {set.type}</Typography>
+                  <Typography variant="body1">Brand: {set.brand}</Typography>
+                  <Typography variant="body1">Color: {set.color}</Typography>
+                  <Typography variant="body1">Size: {set.size}</Typography>
+                  <Typography variant="body1">Date: {set.date}</Typography>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    style={{ marginTop: 8 }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              </ListItem>
+              <Divider />
+            </div>
+          ))}
+        </List>
+      </Box>
+    </Container>
   );
 };
 

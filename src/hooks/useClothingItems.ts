@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { API_URL } from '../config';
+import { API_URL } from '../constants/config';
 
 const fetchClothingItems = async () => {
   const response = await axios.get(API_URL);

@@ -1,85 +1,98 @@
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  IconButton,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { FC } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  Button,
+} from '@mui/material';
+import { Menu as MenuIcon } from '@mui/icons-material';
+import { useStyles } from '../constants/styles';
 
 type HeaderProps = {
   title: string;
   showBackButton?: boolean;
 };
 
-const Header: FC<HeaderProps> = ({ title, showBackButton = false }) => {
+const Header: React.FC<HeaderProps> = ({ title, showBackButton = false }) => {
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toggleMenu = () => (isOpen ? onClose() : onOpen());
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const classes = useStyles();
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+      setDrawerOpen(open);
+    };
 
   return (
-    <Box as="header" bg="blue.500" color="white" px={4} py={3} boxShadow="md">
-      <Flex alignItems="center" justifyContent="space-between">
-        {showBackButton && (
-          <Button
-            variant="outline"
-            colorScheme="whiteAlpha"
-            onClick={() => navigate(-1)}
-          >
-            Back
-          </Button>
-        )}
-        <Heading as="h1" size="lg">
-          HackaStyle
-        </Heading>
-        <Flex alignItems="center">
-          <Text fontSize="xl" ml={4}>
+    <div className={classes.header}>
+      <AppBar position="fixed" color="transparent" elevation={0}>
+        <Toolbar>
+          {showBackButton && (
+            <Button color="inherit" onClick={() => navigate(-1)}>
+              Back
+            </Button>
+          )}
+          <Typography variant="h6" className={classes.header}>
+            HackaStyle
+          </Typography>
+          <Typography variant="h6" className={classes.header}>
             {title}
-          </Text>
+          </Typography>
           <IconButton
-            ml={4}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label="Toggle Menu"
-            variant="outline"
-            colorScheme="whiteAlpha"
-            onClick={toggleMenu}
-          />
-        </Flex>
-      </Flex>
-      {isOpen && (
-        <Box mt={4} bg="blue.600" rounded="md" boxShadow="md">
-          <Flex direction="column" p={4}>
-            <Button
-              mb={2}
-              variant="link"
-              colorScheme="whiteAlpha"
-              onClick={() => navigate('/')}
-            >
-              Home
-            </Button>
-            <Button
-              mb={2}
-              variant="link"
-              colorScheme="whiteAlpha"
-              onClick={() => navigate('/clothing-list')}
-            >
-              Clothing List
-            </Button>
-            <Button
-              variant="link"
-              colorScheme="whiteAlpha"
-              onClick={() => navigate('/saved-sets')}
-            >
-              Saved Sets
-            </Button>
-          </Flex>
-        </Box>
-      )}
-    </Box>
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+        <List>
+          <ListItem button onClick={() => navigate('/')}>
+            <ListItemText primary="Home" />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => navigate('/clothing-list?type=shoes')}
+          >
+            <ListItemText primary="Shoes" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => navigate('/clothing-list?type=shirts')}
+          >
+            <ListItemText primary="Shirts" />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => navigate('/clothing-list?type=pants')}
+          >
+            <ListItemText primary="Pants" />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => navigate('/saved-sets')}>
+            <ListItemText primary="Saved Sets" />
+          </ListItem>
+        </List>
+      </Drawer>
+    </div>
   );
 };
 

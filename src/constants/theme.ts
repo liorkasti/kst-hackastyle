@@ -1,0 +1,15 @@
+export const THEME = {
+  bkg: '#f5f5f5',
+  componentBkg: '#ff97cf',
+  primary: '#15803d',
+  secondary: '#22d3ee',
+  submit: '#065f46',
+  title: '#888888',
+  modalTitle: '#455EFF',
+  thirdary: '#5B58AD',
+  text: '#A6A6A6',
+  subtext: '#9a3412',
+  gray: '#D9D9D9',
+  error: '#f13a59',
+  placeholder: '#AAA9C0',
+};
